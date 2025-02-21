@@ -7,6 +7,7 @@ This repository implements a 2D Weakly Compressible Smoothed Particle Hydrodynam
 * Full GPU acceleration of SPH computation using Warp
 * Optimized neighbor search via Warp-based hash grid
 * Adaptive time-stepping with Courant-Friedrichs-Lewy (CFL) condition
+* Include a PyQT5 GUI for visualization
 
 ## WCSPH Algorithm Overview
 
@@ -90,3 +91,16 @@ $$\mathbf{a}_{\text{pressure}, i} = -\sum_j m_j \left( \frac{p_i}{\rho_i^2} + \f
 2. **Viscosity Force**: The viscosity force on particle $i$ is given by:
 $$\mathbf{a}_{\text{viscosity}, i} =  \sum_j \mu_{ij} m_j \left( \mathbf{v}_j - \mathbf{v}_i \right) \nabla W(\mathbf{r}_i - \mathbf{r}_j, h), $$
 where $\mu_{ij} = \dfrac{\alpha c_0 h }{\rho_i + \rho_j}$ is the viscosity coefficient.
+
+## Warp-based Hash Grid
+The neighbor search is accelerated using a **GPU-optimized spatial hash grid (HashGridGPU class)** implemented with Warp primitives. Key optimizations:
+
+* Parallel grid cell construction
+* Warp-native atomic operations
+* Coalesced memory access patterns
+* Zero CPU-GPU data transfer during search
+
+## Requirements
+* NVIDIA GPU with CUDA support
+* Warp 1.6.0
+* Python 3.8+
